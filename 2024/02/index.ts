@@ -52,5 +52,49 @@ const part2 = async () => {
   console.log({ part2: result });
 };
 
+const part3 = async () => {
+  const input = await Bun.file("input3.txt").text();
+  const words = input.split("\n")[0].split("WORDS:")[1].split(",");
+  const [, , ...lines] = input.split("\n");
+
+  words.forEach((word) => {
+    const backwardsWord = word.split("").reverse().join("");
+    if (!words.includes(backwardsWord)) {
+      words.push(backwardsWord);
+    }
+  });
+
+  const grid = lines.map((line) => line.split(""));
+
+  let matches: Record<string, number> = {};
+  for (let y = 0; y < grid.length; y++) {
+    for (let x = 0; x < grid[0].length; x++) {
+      words.forEach((word) => {
+        // Horizontally
+        let found = word.split("").every((letter, i) => {
+          return letter === grid[y][(x + i) % grid[0].length];
+        });
+        if (found) {
+          word.split("").forEach((_, i) => {
+            matches[`${(x + i) % grid[0].length},${y}`] = 1;
+          });
+        }
+
+        // Vertically
+        found = word.split("").every((letter, i) => {
+          return y + i < grid.length && letter === grid[y + i][x];
+        });
+        if (found) {
+          word.split("").forEach((_, i) => {
+            matches[`${x},${y + i}`] = 1;
+          });
+        }
+      });
+    }
+  }
+  console.log({ part3: Object.keys(matches).length });
+};
+
 part1();
 part2();
+part3();
