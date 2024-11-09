@@ -31,8 +31,10 @@ const part2 = async () => {
       const matches = new Array(part.length).fill(0);
       words.forEach((word) => {
         let indexes = [
-          ...part.matchAll(new RegExp(word, "g")),
-          ...part.matchAll(new RegExp(word.split("").reverse().join(""), "g")),
+          ...part.matchAll(new RegExp(`(?=${word})`, "g")),
+          ...part.matchAll(
+            new RegExp(`(?=${word.split("").reverse().join("")})`, "g"),
+          ),
         ].map((i) => i.index);
 
         indexes.forEach((index) => {
