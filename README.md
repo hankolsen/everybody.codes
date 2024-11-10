@@ -1,4 +1,6 @@
-# everbody.codes-2024-01
+# everbody.codes
+
+My solutions to https://everybody.codes
 
 To install dependencies:
 
